@@ -1,0 +1,37 @@
+spring:
+  application:
+    name: web-quiz
+
+  profiles:
+    default: local
+
+server:
+  servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+
+  data:
+    redis:
+      port: 6379
+
+---
+spring:
+  config:
+    activate:
+      on-profile: local
+
+  redis:
+    host: localhost
+    port: 6379
+
+---
+spring:
+  config:
+    activate:
+      on-profile: test
+
+  redis:
+    host: localhost
+    port: 6379
