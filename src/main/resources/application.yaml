@@ -2,6 +2,12 @@ spring:
   application:
     name: web-quiz
 
+  datasource:
+    url: jdbc:h2:mem:~/webQuiz
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+
   profiles:
     default: local
 
@@ -11,10 +17,6 @@ server:
       charset: UTF-8
       enabled: true
       force: true
-
-  data:
-    redis:
-      port: 6379
 
 ---
 spring:
@@ -35,3 +37,16 @@ spring:
   redis:
     host: localhost
     port: 6379
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    defer-datasource-initialization: true
+
+  sql:
+    init:
+      mode: always
