@@ -2,7 +2,6 @@ package com.example.webquiz.domain
 
 import org.springframework.data.annotation.Id
 import org.springframework.data.redis.core.RedisHash
-import java.io.Serializable
 
 @RedisHash("gameRoom")
 class GameRoom(
@@ -10,7 +9,7 @@ class GameRoom(
     val gameId: Long,
     var playerCount: Int = 0,
     var status: GameStatus = GameStatus.WAITING
-) : Serializable {
+) {
 
     fun join() {
         playerCount++
