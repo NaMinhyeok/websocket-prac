@@ -1,6 +1,6 @@
 package com.example.webquiz.service
 
-import com.example.webquiz.domain.chat.Chat
+import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.messaging.simp.SimpMessagingTemplate
 import org.springframework.stereotype.Component
@@ -16,9 +16,10 @@ class RedisSubscriber(
     }
 
     fun chatMessage(publishMessage: String) {
-        val chat: Chat = objectMapper.readValue(publishMessage, Chat::class.java)
+        val jsonNode: JsonNode = objectMapper.readTree(publishMessage)
+        val roomId: String = jsonNode.get("roomId").asText()
         messagingTemplate.convertAndSend(
-            "/topic/chat/room/${chat.roomId}", chat
+            "/topic/chat/room/$roomId", publishMessage
         )
     }
 
