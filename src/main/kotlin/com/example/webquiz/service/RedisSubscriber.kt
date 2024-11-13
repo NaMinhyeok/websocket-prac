@@ -11,7 +11,7 @@ class RedisSubscriber(
     private val messagingTemplate: SimpMessagingTemplate
 ) {
 
-    fun chatMessage(publishMessage: String) {
+    fun message(publishMessage: String) {
         val jsonNode: JsonNode = objectMapper.readTree(publishMessage)
         val roomId: String = jsonNode.get("roomId").asText()
         messagingTemplate.convertAndSend(
