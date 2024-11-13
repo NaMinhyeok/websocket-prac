@@ -1,12 +1,15 @@
 package com.example.webquiz.config
 
+import com.example.webquiz.service.RedisSubscriber
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.data.redis.connection.RedisConnectionFactory
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory
 import org.springframework.data.redis.core.RedisTemplate
+import org.springframework.data.redis.listener.ChannelTopic
 import org.springframework.data.redis.listener.RedisMessageListenerContainer
+import org.springframework.data.redis.listener.adapter.MessageListenerAdapter
 import org.springframework.data.redis.repository.configuration.EnableRedisRepositories
 import org.springframework.data.redis.serializer.StringRedisSerializer
 
@@ -40,14 +43,39 @@ class RedisRepositoryConfig {
     }
 
     @Bean
+    fun gameTopic(): ChannelTopic {
+        return ChannelTopic("game")
+    }
+
+    @Bean
+    fun chatTopic(): ChannelTopic {
+        return ChannelTopic("chat")
+    }
+
+    @Bean
     fun redisMessageListenerContainer(
         redisConnectionFactory: RedisConnectionFactory,
-        quizMessageListener: QuizMessageListener
+        gameMessageListenerAdapter: MessageListenerAdapter,
+        chatMessageListenerAdapter: MessageListenerAdapter,
+        gameTopic: ChannelTopic,
+        chatTopic: ChannelTopic
     ): RedisMessageListenerContainer {
         val container = RedisMessageListenerContainer()
         container.setConnectionFactory(redisConnectionFactory)
+        container.addMessageListener(gameMessageListenerAdapter, gameTopic)
+        container.addMessageListener(chatMessageListenerAdapter, chatTopic)
 
         return container
+    }
+
+    @Bean
+    fun chatMessageListenerAdapter(redisSubscriber: RedisSubscriber): MessageListenerAdapter {
+        return MessageListenerAdapter(redisSubscriber, "chatMessage")
+    }
+
+    @Bean
+    fun gameMessageListenerAdapter(redisSubscriber: RedisSubscriber): MessageListenerAdapter {
+        return MessageListenerAdapter(redisSubscriber, "gameMessage")
     }
 
 }
