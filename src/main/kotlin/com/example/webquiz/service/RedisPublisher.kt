@@ -1,5 +1,6 @@
 package com.example.webquiz.service
 
+import com.example.webquiz.domain.message.BaseMessage
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.data.redis.core.RedisTemplate
@@ -18,7 +19,7 @@ class RedisPublisher(
         redisTemplate.convertAndSend(gameTopic.topic, message)
     }
 
-    fun publishChat(message: Any) {
+    fun publish(message: BaseMessage) {
         val messageJson = objectMapper.writeValueAsString(message)
         redisTemplate.convertAndSend(chatTopic.topic, messageJson)
     }
