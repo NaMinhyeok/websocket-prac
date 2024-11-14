@@ -15,7 +15,7 @@ class RedisSubscriber(
         val jsonNode: JsonNode = objectMapper.readTree(publishMessage)
         val roomId: String = jsonNode.get("roomId").asText()
         messagingTemplate.convertAndSend(
-            "/topic/chat/room/$roomId", publishMessage
+            "/topic/game/room/$roomId", publishMessage
         )
     }
 

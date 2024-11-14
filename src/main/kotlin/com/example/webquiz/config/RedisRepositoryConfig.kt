@@ -48,10 +48,14 @@ class RedisRepositoryConfig {
     }
 
     @Bean
+    fun gameMessageListenerAdapter(redisSubscriber: RedisSubscriber): MessageListenerAdapter {
+        return MessageListenerAdapter(redisSubscriber, "message")
+    }
+
+    @Bean
     fun redisMessageListenerContainer(
         redisConnectionFactory: RedisConnectionFactory,
         gameMessageListenerAdapter: MessageListenerAdapter,
-        chatMessageListenerAdapter: MessageListenerAdapter,
         gameTopic: ChannelTopic,
     ): RedisMessageListenerContainer {
         val container = RedisMessageListenerContainer()
@@ -59,11 +63,6 @@ class RedisRepositoryConfig {
         container.addMessageListener(gameMessageListenerAdapter, gameTopic)
 
         return container
-    }
-
-    @Bean
-    fun gameMessageListenerAdapter(redisSubscriber: RedisSubscriber): MessageListenerAdapter {
-        return MessageListenerAdapter(redisSubscriber, "gameMessage")
     }
 
 }
