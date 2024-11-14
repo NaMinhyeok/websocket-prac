@@ -43,6 +43,8 @@ dependencies {
     testImplementation("io.kotest.extensions:kotest-extensions-spring:1.3.0")
     // mockk
     testImplementation("io.mockk:mockk:1.13.13")
+    // spring Mock
+    testImplementation("com.ninja-squad:springmockk:4.0.2")
 
 }
 
