@@ -8,26 +8,26 @@ class GameRoomTest() : DescribeSpec({
 
     describe("게임방에서") {
         context("게임방을 생성하면") {
-            val gameRoom = GameRoom.create(1L)
+            val gameRoom = GameRoom()
 
             it("게임방이 생성된다.") {
-                gameRoom.gameId shouldBe 1
-                gameRoom.playerCount shouldBe 1
+                gameRoom.playerCount shouldBe 0
+                gameRoom.currentQuizIndex shouldBe 0
                 gameRoom.status shouldBe GameStatus.WAITING
             }
         }
 
         context("게임방에 참가하면") {
-            val gameRoom = GameRoom.create(1L)
+            val gameRoom = GameRoom()
             gameRoom.join()
 
             it("게임방 인원이 증가한다.") {
-                gameRoom.playerCount shouldBe 2
+                gameRoom.playerCount shouldBe 1
             }
         }
 
         context("게임방에서 퇴장하면") {
-            val gameRoom = GameRoom.create(1L)
+            val gameRoom = GameRoom(playerCount = 1)
             gameRoom.leave()
 
             it("게임방 인원이 감소한다.") {

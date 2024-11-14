@@ -6,8 +6,9 @@ import org.springframework.data.redis.core.RedisHash
 @RedisHash("gameRoom")
 class GameRoom(
     @Id
-    val gameId: Long,
+    val id: String? = null,
     var playerCount: Int = 0,
+    var currentQuizIndex : Int = 0,
     var status: GameStatus = GameStatus.WAITING
 ) {
 
@@ -17,15 +18,5 @@ class GameRoom(
 
     fun leave() {
         playerCount--
-    }
-
-    companion object {
-        fun create(
-            gameId: Long,
-        ) = GameRoom(
-            gameId = gameId,
-            playerCount = 1,
-            status = GameStatus.WAITING
-        )
     }
 }
